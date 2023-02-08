@@ -1,8 +1,8 @@
 package com.example;
 
 public class Cuenta {
-    private int numero;
-    private int saldo;
+    public int numero;
+    public int saldo;
 
     public void ingresarDinero(int cantidad) throws IllegalArgumentException {
         if (cantidad <= 0)
