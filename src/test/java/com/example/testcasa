@@ -1,0 +1,42 @@
+package com.example;
+
+import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+
+@TestMethodOrder(OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
+public class CuentaTest {
+
+    private Cuenta cuenta;
+
+    @BeforeAll
+    public void nuevaCuenta(){
+        cuenta = new Cuenta(1,0);
+    }
+
+    @Test 
+    @Order(1)
+    void ingresaCienDebeImprimirCuentaUnoSaldoCien() throws Exception {
+        String textoCuenta = tapSystemOut(() -> {
+            cuenta.ingresarDinero(100);
+            cuenta.mostrarCuenta();
+        });
+        assertEquals("Saldo en la cuenta 1: 100", textoCuenta.trim());
+    }
+
+    @Test
+    @Order(2)
+    void ingresaMenosMilDebeLanzarExcepcion(){
+        assertThrows(IllegalArgumentException.class, () -> cuenta.ingresarDinero(-1000));
+    }
+
+}
